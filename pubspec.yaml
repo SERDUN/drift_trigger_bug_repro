@@ -1,0 +1,19 @@
+name: drift_trigger_bug_repro
+description: Reproduction of Drift Trigger.byDialect issue
+version: 1.0.0
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+
+dependencies:
+  clock: ^1.1.1
+  drift: ^2.21.0
+  io: ^1.0.4
+  path: ^1.8.3
+  sqlite3_flutter_libs: ^0.5.26
+
+dev_dependencies:
+  build_runner: ^2.4.13
+  drift_dev: ^2.21.2
+  lints: ^5.0.0
+  test: ^1.25.9
