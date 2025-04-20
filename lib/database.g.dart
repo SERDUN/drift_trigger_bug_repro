@@ -281,11 +281,11 @@ class $TableWithDefaultTable extends TableWithDefault
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _valueWithDefaultMeta =
-      const VerificationMeta('valueWithDefault');
+  static const VerificationMeta _sendAttemptsMeta =
+      const VerificationMeta('sendAttempts');
   @override
-  late final GeneratedColumn<int> valueWithDefault = GeneratedColumn<int>(
-      'value_with_default', aliasedName, false,
+  late final GeneratedColumn<int> sendAttempts = GeneratedColumn<int>(
+      'send_attempts', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
@@ -296,7 +296,7 @@ class $TableWithDefaultTable extends TableWithDefault
       'description', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
   @override
-  List<GeneratedColumn> get $columns => [id, valueWithDefault, description];
+  List<GeneratedColumn> get $columns => [id, sendAttempts, description];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -311,11 +311,11 @@ class $TableWithDefaultTable extends TableWithDefault
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('value_with_default')) {
+    if (data.containsKey('send_attempts')) {
       context.handle(
-          _valueWithDefaultMeta,
-          valueWithDefault.isAcceptableOrUnknown(
-              data['value_with_default']!, _valueWithDefaultMeta));
+          _sendAttemptsMeta,
+          sendAttempts.isAcceptableOrUnknown(
+              data['send_attempts']!, _sendAttemptsMeta));
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -334,8 +334,8 @@ class $TableWithDefaultTable extends TableWithDefault
     return TableWithDefaultData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      valueWithDefault: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}value_with_default'])!,
+      sendAttempts: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}send_attempts'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
     );
@@ -350,15 +350,15 @@ class $TableWithDefaultTable extends TableWithDefault
 class TableWithDefaultData extends DataClass
     implements Insertable<TableWithDefaultData> {
   final int id;
-  final int valueWithDefault;
+  final int sendAttempts;
   final String? description;
   const TableWithDefaultData(
-      {required this.id, required this.valueWithDefault, this.description});
+      {required this.id, required this.sendAttempts, this.description});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['value_with_default'] = Variable<int>(valueWithDefault);
+    map['send_attempts'] = Variable<int>(sendAttempts);
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
@@ -368,7 +368,7 @@ class TableWithDefaultData extends DataClass
   TableWithDefaultDataCompanion toCompanion(bool nullToAbsent) {
     return TableWithDefaultDataCompanion(
       id: Value(id),
-      valueWithDefault: Value(valueWithDefault),
+      sendAttempts: Value(sendAttempts),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
@@ -380,7 +380,7 @@ class TableWithDefaultData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TableWithDefaultData(
       id: serializer.fromJson<int>(json['id']),
-      valueWithDefault: serializer.fromJson<int>(json['valueWithDefault']),
+      sendAttempts: serializer.fromJson<int>(json['sendAttempts']),
       description: serializer.fromJson<String?>(json['description']),
     );
   }
@@ -389,26 +389,26 @@ class TableWithDefaultData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'valueWithDefault': serializer.toJson<int>(valueWithDefault),
+      'sendAttempts': serializer.toJson<int>(sendAttempts),
       'description': serializer.toJson<String?>(description),
     };
   }
 
   TableWithDefaultData copyWith(
           {int? id,
-          int? valueWithDefault,
+          int? sendAttempts,
           Value<String?> description = const Value.absent()}) =>
       TableWithDefaultData(
         id: id ?? this.id,
-        valueWithDefault: valueWithDefault ?? this.valueWithDefault,
+        sendAttempts: sendAttempts ?? this.sendAttempts,
         description: description.present ? description.value : this.description,
       );
   TableWithDefaultData copyWithCompanion(TableWithDefaultDataCompanion data) {
     return TableWithDefaultData(
       id: data.id.present ? data.id.value : this.id,
-      valueWithDefault: data.valueWithDefault.present
-          ? data.valueWithDefault.value
-          : this.valueWithDefault,
+      sendAttempts: data.sendAttempts.present
+          ? data.sendAttempts.value
+          : this.sendAttempts,
       description:
           data.description.present ? data.description.value : this.description,
     );
@@ -418,57 +418,55 @@ class TableWithDefaultData extends DataClass
   String toString() {
     return (StringBuffer('TableWithDefaultData(')
           ..write('id: $id, ')
-          ..write('valueWithDefault: $valueWithDefault, ')
+          ..write('sendAttempts: $sendAttempts, ')
           ..write('description: $description')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, valueWithDefault, description);
+  int get hashCode => Object.hash(id, sendAttempts, description);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TableWithDefaultData &&
           other.id == this.id &&
-          other.valueWithDefault == this.valueWithDefault &&
+          other.sendAttempts == this.sendAttempts &&
           other.description == this.description);
 }
 
 class TableWithDefaultDataCompanion
     extends UpdateCompanion<TableWithDefaultData> {
   final Value<int> id;
-  final Value<int> valueWithDefault;
+  final Value<int> sendAttempts;
   final Value<String?> description;
   const TableWithDefaultDataCompanion({
     this.id = const Value.absent(),
-    this.valueWithDefault = const Value.absent(),
+    this.sendAttempts = const Value.absent(),
     this.description = const Value.absent(),
   });
   TableWithDefaultDataCompanion.insert({
     this.id = const Value.absent(),
-    this.valueWithDefault = const Value.absent(),
+    this.sendAttempts = const Value.absent(),
     this.description = const Value.absent(),
   });
   static Insertable<TableWithDefaultData> custom({
     Expression<int>? id,
-    Expression<int>? valueWithDefault,
+    Expression<int>? sendAttempts,
     Expression<String>? description,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (valueWithDefault != null) 'value_with_default': valueWithDefault,
+      if (sendAttempts != null) 'send_attempts': sendAttempts,
       if (description != null) 'description': description,
     });
   }
 
   TableWithDefaultDataCompanion copyWith(
-      {Value<int>? id,
-      Value<int>? valueWithDefault,
-      Value<String?>? description}) {
+      {Value<int>? id, Value<int>? sendAttempts, Value<String?>? description}) {
     return TableWithDefaultDataCompanion(
       id: id ?? this.id,
-      valueWithDefault: valueWithDefault ?? this.valueWithDefault,
+      sendAttempts: sendAttempts ?? this.sendAttempts,
       description: description ?? this.description,
     );
   }
@@ -479,8 +477,8 @@ class TableWithDefaultDataCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (valueWithDefault.present) {
-      map['value_with_default'] = Variable<int>(valueWithDefault.value);
+    if (sendAttempts.present) {
+      map['send_attempts'] = Variable<int>(sendAttempts.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -492,7 +490,7 @@ class TableWithDefaultDataCompanion
   String toString() {
     return (StringBuffer('TableWithDefaultDataCompanion(')
           ..write('id: $id, ')
-          ..write('valueWithDefault: $valueWithDefault, ')
+          ..write('sendAttempts: $sendAttempts, ')
           ..write('description: $description')
           ..write(')'))
         .toString();
@@ -674,13 +672,13 @@ typedef $$TableWithTimestampsTableProcessedTableManager = ProcessedTableManager<
 typedef $$TableWithDefaultTableCreateCompanionBuilder
     = TableWithDefaultDataCompanion Function({
   Value<int> id,
-  Value<int> valueWithDefault,
+  Value<int> sendAttempts,
   Value<String?> description,
 });
 typedef $$TableWithDefaultTableUpdateCompanionBuilder
     = TableWithDefaultDataCompanion Function({
   Value<int> id,
-  Value<int> valueWithDefault,
+  Value<int> sendAttempts,
   Value<String?> description,
 });
 
@@ -696,9 +694,8 @@ class $$TableWithDefaultTableFilterComposer
   ColumnFilters<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get valueWithDefault => $composableBuilder(
-      column: $table.valueWithDefault,
-      builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get sendAttempts => $composableBuilder(
+      column: $table.sendAttempts, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnFilters(column));
@@ -716,8 +713,8 @@ class $$TableWithDefaultTableOrderingComposer
   ColumnOrderings<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get valueWithDefault => $composableBuilder(
-      column: $table.valueWithDefault,
+  ColumnOrderings<int> get sendAttempts => $composableBuilder(
+      column: $table.sendAttempts,
       builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get description => $composableBuilder(
@@ -736,8 +733,8 @@ class $$TableWithDefaultTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get valueWithDefault => $composableBuilder(
-      column: $table.valueWithDefault, builder: (column) => column);
+  GeneratedColumn<int> get sendAttempts => $composableBuilder(
+      column: $table.sendAttempts, builder: (column) => column);
 
   GeneratedColumn<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => column);
@@ -772,22 +769,22 @@ class $$TableWithDefaultTableTableManager extends RootTableManager<
               $$TableWithDefaultTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
-            Value<int> valueWithDefault = const Value.absent(),
+            Value<int> sendAttempts = const Value.absent(),
             Value<String?> description = const Value.absent(),
           }) =>
               TableWithDefaultDataCompanion(
             id: id,
-            valueWithDefault: valueWithDefault,
+            sendAttempts: sendAttempts,
             description: description,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
-            Value<int> valueWithDefault = const Value.absent(),
+            Value<int> sendAttempts = const Value.absent(),
             Value<String?> description = const Value.absent(),
           }) =>
               TableWithDefaultDataCompanion.insert(
             id: id,
-            valueWithDefault: valueWithDefault,
+            sendAttempts: sendAttempts,
             description: description,
           ),
           withReferenceMapper: (p0) => p0

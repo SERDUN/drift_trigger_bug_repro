@@ -19,7 +19,7 @@ class TableWithDefault extends Table {
 
   IntColumn get id => integer().autoIncrement()();
 
-  IntColumn get valueWithDefault => integer().withDefault(const Constant(0))();
+  IntColumn get sendAttempts => integer().withDefault(const Constant(0))();
 
   TextColumn get description => text().nullable()();
 }
